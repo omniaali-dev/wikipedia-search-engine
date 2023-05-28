@@ -1,10 +1,19 @@
 let resultsContainer = document.getElementsByClassName("container")[0]
 
+function debounce(func, delay = 1000) {
+    let timer;
+    return (...args)=>{
+        clearTimeout(timer);
+        timer = setTimeout(()=>{func.apply(this, args);}, delay);
+    }
+}
+
 const validateInput = (el) => {
     if(el.value === ""){
         resultsContainer.innerHTML = "<p>Type something in the above search input</p>"
     }else{
-        generateResults(el.value, el)
+        const processChange = debounce(() => generateResults(el.value, el));
+        processChange();
     }
 }
 
